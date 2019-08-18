@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Matching Game</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style type="text/css">
+        .noClickAllowed {
+            pointer-events: none;
+        }
+        .hide {
+            display: none;
+        }
+        h2 {
+            text-align: center;
+        }
+        .container {
+            display: none;
+        }
+        .row div {
+            background: yellow;
+            border: 1px solid black;
+        }
+        .row div {
+            width: 123px;
+            height: 200px;
+        }
+        img {
+            width: 230px;
+            height: 198px;
+        }
+        #leaderboard{
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Username:
+        <input type="text" id="username" name="username" size="15" maxlength="30" />
+        <input type="submit" id="submit" />
+    </h2>
+    <div id="leaderboard">Leaderboard</div>
+    <div class="container">
+
+        <h2>countdown: <span id="countdown"></span></h2>
+        <h2>score: <span id="score"></span></h2>
+
+        <div class="row">
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media3.giphy.com/media/piTERt2CEdrLt2WLv0/giphy.gif?cid=ecf05e475d4a52c7334845734dc1d5bb&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media2.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif?cid=790b76115d4a52eb6e2f68776f8e1a5f&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media1.giphy.com/media/3boPPdHk2ueo8/giphy.gif?cid=790b76115d4a53255773694363a19c28&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media0.giphy.com/media/kDXxjwpazm9b2LzOMc/giphy.gif?cid=790b76115d4a53cb4259585945364f0e&rid=giphy.gif">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media3.giphy.com/media/piTERt2CEdrLt2WLv0/giphy.gif?cid=ecf05e475d4a52c7334845734dc1d5bb&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media2.giphy.com/media/c07uLr6NAvVAY/giphy.gif?cid=790b76115d4a538c35647833414ba34d&rid=giphy.gif">
+
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide" src="https://i.imgur.com/XqhVAA7.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media0.giphy.com/media/kDXxjwpazm9b2LzOMc/giphy.gif?cid=790b76115d4a53cb4259585945364f0e&rid=giphy.gif">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media2.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif?cid=790b76115d4a52eb6e2f68776f8e1a5f&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media2.giphy.com/media/c07uLr6NAvVAY/giphy.gif?cid=790b76115d4a538c35647833414ba34d&rid=giphy.gif">
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide"
+                    src="https://media1.giphy.com/media/3boPPdHk2ueo8/giphy.gif?cid=790b76115d4a53255773694363a19c28&rid=giphy.gif">
+
+            </div>
+
+            <div class="col-3 imgContainer">
+                <img class="hide" src="https://i.imgur.com/XqhVAA7.gif">
+            </div>
+        </div>
+
+    </div>
+    <!--<script src="./assets/javascripts/firebase-db_KMB.js"></script>-->
+
+    <!-- Firebase JavaScript Link -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        //<h2>countdown: <span>29</span></h2>
+        var score = 0;
+        var counter = 30;
+        var pairsToWin = 6;
+        var alertedScore = false;
+        var $span = $('#countdown');
+
+        // Initialize Firebase
+        // This is the code we copied and pasted from our app page
+        var config = {
+            apiKey: "AIzaSyAQ0c30iFDMpNokc5Abe7cTUZBCv8p4kbE",
+            authDomain: "myfirstproject-69a02.firebaseapp.com",
+            databaseURL: "https://myfirstproject-69a02.firebaseio.com",
+            projectId: "myfirstproject-69a02",
+            storageBucket: "",
+            messagingSenderId: "932910422971",
+            appId: "1:932910422971:web:fbb81c7ecbef4b32"
+        };
+        firebase.initializeApp(config);
+        // Variables
+        // ================================================================================
+        // Get a reference to the database service
+        var database = firebase.database();
+        // Initializing our click count at 0
+        //    var clickCounter = 0;
+        //        database.value.counter()
+        // Functions
+        // ================================================================================
+        // On Click
+        //$("#click-button").on("click", function() {
+        // Add 1 to clickCounter
+        //      clickCounter++;
+        database.ref("users").on("value", function (data) {
+            $('#leaderboard').empty();
+            var users = data.val();
+            for (name in users) {
+                var u=users[name];
+                $('#leaderboard').append("<p>" + u.name + ": "+ u.score + "</p>");
+            }
+        });
+        // **** Store Click Data to Firebase in a JSON property called clickCount *****
+        // **** Note how we are using the Firebase .set() method ****
+        // **** .ref() refers to the path you want to save your data to
+        // **** Since we left .ref() blank, it will save to the root directory
+        function gameOver() {
+            database.ref("users/" + username).set({
+                //       counter: clickCounter,
+                name: $("#username").val(),
+                score: score,
+                countdown: counter
+            });
+        }
+        $span.text(counter);
+        function decreaseTime() {
+            if ((counter == 0) && (alertedScore == false)) {
+                alert('your score is ' + score);
+                alertedScore = true;
+            }
+            counter--;
+            $span.text(counter);
+            if (counter == -1) {
+                $span.text('time is up');
+                gameOver();
+                clearInterval(interval);
+            }
+        }
+        var interval, username, initialscore;
+        $("#submit").on("click", function () {
+            
+            // Initialize database
+            username = $("#username").val();
+            database.ref("users/" + username + "/score").on("value", function (data) {
+                if (data.val() > 0) {
+                    score = data.val();
+                } else {
+                    score = 0;
+                }
+                initialscore = score;
+                $("#score").text(score);
+            })
+            $(".container").show();
+            interval = setInterval(decreaseTime, 1 * 1000);
+        })
+        var firstSrc; //the value of first is undefined
+        var secondSrc; //the value of second is undefined
+        var $firstImg;
+        var $secondImg;
+        $('.imgContainer').on('click', function () {
+            //if first src or second src is empty
+            if ((firstSrc == undefined) || (secondSrc == undefined)) {
+                clearInterval(timer);
+                var $img = $(this).children().eq(0);
+                //disable clicking on this image after clicking on it
+                $img.addClass('noClickAllowed');
+                var src = $img.attr('src'); //image url goes in here
+                $img.removeClass('hide');
+                if (firstSrc == undefined) { //is first empty
+                    firstSrc = src;
+                    $firstImg = $img;
+                } else if (secondSrc == undefined) { //is second empty
+                    secondSrc = src;
+                    $secondImg = $img;
+                }
+                var timer = setTimeout(function () {
+                    //is first and second not empty
+                    if ((firstSrc != undefined) && (secondSrc != undefined)) {
+                        if (firstSrc != secondSrc) {
+                            $firstImg.addClass('hide');
+                            $secondImg.addClass('hide');
+                            $firstImg.removeClass('noClickAllowed');
+                            $secondImg.removeClass('noClickAllowed');
+                        } else {
+                            score++;
+                            $('#score').text(score);
+                            if ((score - initialscore == pairsToWin) && (alertedScore == false)) {
+                                alert('your score is ' + score);
+                                alertedScore = true;
+                                gameOver();
+                                //stop the timer
+                                clearInterval(interval);
+                            }
+                        }
+                        firstSrc = undefined;
+                        secondSrc = undefined;
+                        //not needed
+                        $firstImg = undefined;
+                        $secondImg = undefined;
+                    }
+                }, 750);
+            }
+        });
+    </script>
+</body>
+
+</html>
